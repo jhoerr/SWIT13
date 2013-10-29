@@ -20,7 +20,9 @@ namespace ClaimsDemo.Controllers
         {
             return new UserInfo
             {
-                Name = User.Identity.IsAuthenticated ? User.Identity.Name : "friend",
+                Name = User.Identity.IsAuthenticated 
+                       ? User.Identity.Name 
+                       : "friend",
             };
         }
     }
