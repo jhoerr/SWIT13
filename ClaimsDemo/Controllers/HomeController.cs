@@ -16,6 +16,12 @@ namespace ClaimsDemo.Controllers
             return View(model);
         }
 
+        [Authorize]
+        public ActionResult Login()
+        {
+            return RedirectToAction("Index");
+        }
+
         public UserInfo GetModel()
         {
             return new UserInfo
@@ -23,7 +29,15 @@ namespace ClaimsDemo.Controllers
                 Name = User.Identity.IsAuthenticated 
                        ? User.Identity.Name 
                        : "friend",
+                       Roles = GetRoles(),
             };
+        }
+
+        public List<string> GetRoles()
+        {
+            var claimsIdentity = User.Identity as ClaimsIdentity;
+            if (claimsIdentity == null) return new List<string>();
+            return claimsIdentity.Claims.Where(c => c.Type.Equals(ClaimTypes.Role)).Select(c => c.Value).ToList();
         }
     }
 }
